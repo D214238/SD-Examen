@@ -1,0 +1,223 @@
+{
+  "customOrder": {
+    "/": {
+      "children": [
+        "Examen Info",
+        "Checklists",
+        "_attachments",
+        "Dashboard.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "_attachments": {
+      "children": [
+        "_attachments/ERD Example.svg",
+        "_attachments/_attachments.md",
+        "_attachments/Crowsfeet Example.svg",
+        "_attachments/Wireframe Example.svg",
+        "_attachments/Include example.svg",
+        "_attachments/Exclude example.svg",
+        "_attachments/Use case breed.svg",
+        "_attachments/Use case specifiek.svg",
+        "_attachments/Flowchart shapes.svg",
+        "_attachments/Flowchart example.svg",
+        "_attachments/Documents",
+        "_attachments/Afspraken.docx.md",
+        "_attachments/Testplan & Dod.docx.md",
+        "_attachments/Documents.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "_attachments/Documents": {
+      "children": [
+        "_attachments/Documents/Folder.md",
+        "_attachments/Documents/Documents.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "Checklists": {
+      "children": [
+        "Checklists/Checklists.md",
+        "Checklists/Project",
+        "Checklists/Kandidaten"
+      ],
+      "sortOrder": "custom"
+    },
+    "Checklists/Kandidaten": {
+      "children": [
+        "Checklists/Kandidaten/Kandidaten.md",
+        "Checklists/Kandidaten/Jurgen",
+        "Checklists/Kandidaten/Dylan",
+        "Checklists/Kandidaten/Florian"
+      ],
+      "sortOrder": "custom"
+    },
+    "Checklists/Kandidaten/Dylan": {
+      "children": [
+        "Checklists/Kandidaten/Dylan/Dylan.md",
+        "Checklists/Kandidaten/Dylan/Notities.md",
+        "Checklists/Kandidaten/Dylan/Dag 1 - Maandag 11 Mei.md",
+        "Checklists/Kandidaten/Dylan/Dag 2 - Dinsdag 12 Mei.md",
+        "Checklists/Kandidaten/Dylan/Dag 3 - Woensdag 13 Mei.md",
+        "Checklists/Kandidaten/Dylan/Dag 4 - Maandag 18 Mei.md",
+        "Checklists/Kandidaten/Dylan/Dag 5 - Dinsdag 19 Mei.md",
+        "Checklists/Kandidaten/Dylan/Dag 6 - Donderdag 21 Mei.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "Checklists/Kandidaten/Florian": {
+      "children": [
+        "Checklists/Kandidaten/Florian/Florian.md",
+        "Checklists/Kandidaten/Florian/Notities.md",
+        "Checklists/Kandidaten/Florian/Dag 1 - Maandag 11 Mei.md",
+        "Checklists/Kandidaten/Florian/Dag 2 - Dinsdag 12 Mei.md",
+        "Checklists/Kandidaten/Florian/Dag 3 - Woensdag 13 Mei.md",
+        "Checklists/Kandidaten/Florian/Dag 4 - Maandag 18 Mei.md",
+        "Checklists/Kandidaten/Florian/Dag 5 - Dinsdag 19 Mei.md",
+        "Checklists/Kandidaten/Florian/Dag 6 - Donderdag 21 Mei.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "Checklists/Kandidaten/Jurgen": {
+      "children": [
+        "Checklists/Kandidaten/Jurgen/Jurgen.md",
+        "Checklists/Kandidaten/Jurgen/Notities.md",
+        "Checklists/Kandidaten/Jurgen/Dag 1 - Maandag 11 Mei.md",
+        "Checklists/Kandidaten/Jurgen/Dag 2 - Dinsdag 12 Mei.md",
+        "Checklists/Kandidaten/Jurgen/Dag 3 - Woensdag 13 Mei.md",
+        "Checklists/Kandidaten/Jurgen/Dag 4 - Maandag 18 Mei.md",
+        "Checklists/Kandidaten/Jurgen/Dag 5 - Dinsdag 19 Mei.md",
+        "Checklists/Kandidaten/Jurgen/Dag 6 - Donderdag 21 Mei.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "Checklists/Project": {
+      "children": [
+        "Checklists/Project/Project.md",
+        "Checklists/Project/Info.md",
+        "Checklists/Project/Notities.md",
+        "Checklists/Project/Dag 1 - Maandag 11 Mei.md",
+        "Checklists/Project/Dag 2 - Dinsdag 12 Mei.md",
+        "Checklists/Project/Dag 3 - Woensdag 13 Mei.md",
+        "Checklists/Project/Dag 4 - Maandag 18 Mei.md",
+        "Checklists/Project/Dag 5 - Dinsdag 19 Mei.md",
+        "Checklists/Project/Dag 6 - Donderdag 21 Mei.md",
+        "Checklists/Project/Middelen"
+      ],
+      "sortOrder": "custom"
+    },
+    "Checklists/Project/Middelen": {
+      "children": [
+        "Checklists/Project/Middelen/Middelen.md",
+        "Checklists/Project/Middelen/Github Template.md",
+        "Checklists/Project/Middelen/Prompts.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "Examen Info": {
+      "children": [
+        "Examen Info/Examen Info.md",
+        "Examen Info/B1-K1 - Realiseert software",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit"
+      ],
+      "sortOrder": "custom"
+    },
+    "Examen Info/B1-K1 - Realiseert software": {
+      "children": [
+        "Examen Info/B1-K1 - Realiseert software/B1-K1 - Realiseert software.md",
+        "Examen Info/B1-K1 - Realiseert software/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang",
+        "Examen Info/B1-K1 - Realiseert software/W2 - Maakt een technisch ontwerp voor software",
+        "Examen Info/B1-K1 - Realiseert software/W3 - Realiseert (onderdelen van) software",
+        "Examen Info/B1-K1 - Realiseert software/W4 - Test software",
+        "Examen Info/B1-K1 - Realiseert software/W5 - Doet verbetervoorstellen voor de software"
+      ],
+      "sortOrder": "custom"
+    },
+    "Examen Info/B1-K1 - Realiseert software/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang": {
+      "children": [
+        "Examen Info/B1-K1 - Realiseert software/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang.md",
+        "Examen Info/B1-K1 - Realiseert software/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang/C1 - User Stories.md",
+        "Examen Info/B1-K1 - Realiseert software/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang/C2 - Kanban.md",
+        "Examen Info/B1-K1 - Realiseert software/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang/C3 - Burndown.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "Examen Info/B1-K1 - Realiseert software/W2 - Maakt een technisch ontwerp voor software": {
+      "children": [
+        "Examen Info/B1-K1 - Realiseert software/W2 - Maakt een technisch ontwerp voor software/W2 - Maakt een technisch ontwerp voor software.md",
+        "Examen Info/B1-K1 - Realiseert software/W2 - Maakt een technisch ontwerp voor software/C1 - Ontwerp.md",
+        "Examen Info/B1-K1 - Realiseert software/W2 - Maakt een technisch ontwerp voor software/C2 - Schema Technieken.md",
+        "Examen Info/B1-K1 - Realiseert software/W2 - Maakt een technisch ontwerp voor software/C3 - Onderbouwing.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "Examen Info/B1-K1 - Realiseert software/W3 - Realiseert (onderdelen van) software": {
+      "children": [
+        "Examen Info/B1-K1 - Realiseert software/W3 - Realiseert (onderdelen van) software/W3 - Realiseert (onderdelen van) software.md",
+        "Examen Info/B1-K1 - Realiseert software/W3 - Realiseert (onderdelen van) software/C1 - Gerealiseerde Functionaliteiten.md",
+        "Examen Info/B1-K1 - Realiseert software/W3 - Realiseert (onderdelen van) software/C2 - Kwaliteit Opgeleverde Functionaliteiten.md",
+        "Examen Info/B1-K1 - Realiseert software/W3 - Realiseert (onderdelen van) software/C3 - Kwaliteit Code.md",
+        "Examen Info/B1-K1 - Realiseert software/W3 - Realiseert (onderdelen van) software/C4 - Versiebeheer.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "Examen Info/B1-K1 - Realiseert software/W4 - Test software": {
+      "children": [
+        "Examen Info/B1-K1 - Realiseert software/W4 - Test software/W4 - Test software.md",
+        "Examen Info/B1-K1 - Realiseert software/W4 - Test software/C1 - Testplan.md",
+        "Examen Info/B1-K1 - Realiseert software/W4 - Test software/C2 - Test Scenarios.md",
+        "Examen Info/B1-K1 - Realiseert software/W4 - Test software/C3 - Testen.md",
+        "Examen Info/B1-K1 - Realiseert software/W4 - Test software/C4 - Test Rapport.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "Examen Info/B1-K1 - Realiseert software/W5 - Doet verbetervoorstellen voor de software": {
+      "children": [
+        "Examen Info/B1-K1 - Realiseert software/W5 - Doet verbetervoorstellen voor de software/W5 - Doet verbetervoorstellen voor de software.md",
+        "Examen Info/B1-K1 - Realiseert software/W5 - Doet verbetervoorstellen voor de software/C1 - Analyseren.md",
+        "Examen Info/B1-K1 - Realiseert software/W5 - Doet verbetervoorstellen voor de software/C2 - Verbetervoorstel.md",
+        "Examen Info/B1-K1 - Realiseert software/W5 - Doet verbetervoorstellen voor de software/C3 - Planning.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "Examen Info/B1-K2 - Voert ICT-projecten uit": {
+      "children": [
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/B1-K2 - Voert ICT-projecten uit.md",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W1 - Werkt samen in een projectteam",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W2 - Presenteert het opgeleverde werk",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W3 - Evalueert de samenwerking"
+      ],
+      "sortOrder": "custom"
+    },
+    "Examen Info/B1-K2 - Voert ICT-projecten uit/W1 - Werkt samen in een projectteam": {
+      "children": [
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W1 - Werkt samen in een projectteam/W1 - Werkt samen in een projectteam.md",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W1 - Werkt samen in een projectteam/C1 - Actieve Deelname.md",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W1 - Werkt samen in een projectteam/C2 - Afstemmen.md",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W1 - Werkt samen in een projectteam/C3 - Afspraken Vastleggen.md",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W1 - Werkt samen in een projectteam/C4 - Afspraken Nakomen.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "Examen Info/B1-K2 - Voert ICT-projecten uit/W2 - Presenteert het opgeleverde werk": {
+      "children": [
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W2 - Presenteert het opgeleverde werk/W2 - Presenteert het opgeleverde werk.md",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W2 - Presenteert het opgeleverde werk/C1 - Presentatie Houden.md",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W2 - Presenteert het opgeleverde werk/C2 - Presentatie Technieken.md",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W2 - Presenteert het opgeleverde werk/C3 - Beantwoord Vragen.md"
+      ],
+      "sortOrder": "custom"
+    },
+    "Examen Info/B1-K2 - Voert ICT-projecten uit/W3 - Evalueert de samenwerking": {
+      "children": [
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W3 - Evalueert de samenwerking/W3 - Evalueert de samenwerking.md",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W3 - Evalueert de samenwerking/C1 - Feedbackproces.md",
+        "Examen Info/B1-K2 - Voert ICT-projecten uit/W3 - Evalueert de samenwerking/C2 - Reactie op Feedback.md"
+      ],
+      "sortOrder": "custom"
+    }
+  },
+  "sortOrder": "custom",
+  "debugMode": false,
+  "newItemPlacement": "bottom"
+}

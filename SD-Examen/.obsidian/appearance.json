@@ -1,0 +1,17 @@
+{
+  "theme": "obsidian",
+  "accentColor": "#b07840",
+  "showViewHeader": true,
+  "showRibbon": true,
+  "interfaceFontFamily": "Open Sans",
+  "textFontFamily": "Open Sans",
+  "monospaceFontFamily": "Ubuntu Mono",
+  "baseFontSizeAction": false,
+  "baseFontSize": 16,
+  "nativeMenus": false,
+  "cssTheme": "Minimal",
+  "enabledCssSnippets": [
+    "Theme mods",
+    "Font Awesome"
+  ]
+}

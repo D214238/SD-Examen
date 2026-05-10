@@ -1,0 +1,19 @@
+{
+  "defaultViewMode": "source",
+  "readableLineLength": false,
+  "showLineNumber": false,
+  "tabSize": 2,
+  "openBehavior": "file:Home",
+  "newFileLocation": "current",
+  "attachmentFolderPath": ".attachments",
+  "newLinkFormat": "absolute",
+  "alwaysUpdateLinks": true,
+  "showUnsupportedFiles": true,
+  "showInlineTitle": true,
+  "strictLineBreaks": false,
+  "showIndentGuide": false,
+  "userIgnoreFilters": [
+    "/(^_)|(/_)/"
+  ],
+  "promptDelete": false
+}

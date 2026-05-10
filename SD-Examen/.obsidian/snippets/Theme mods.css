@@ -1,0 +1,404 @@
+/*===[ Reset and Fixes ]==============================================================================================*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+.task-list-item .task-list-item-checkbox {
+  margin-bottom: -1px !important;
+}
+
+.el-hr + * > :first-child {
+  margin-top: 0 !important;
+}
+
+/*===[ Mods ]=========================================================================================================*/
+/*:::[ Variables ]:::::*/
+body {
+  /*---[ Existing variables ]-----*/
+  --caret-color: var(--ax1);
+  /* --hr-color: hsla(0, 0%, 100%, 0.07); */
+  --hr-color: hsla(var(--base-h), var(--base-s), calc(var(--base-l) + 12%), 0.5);
+
+  /*---[ New variables ]-----*/
+  --hr-thickness: 2px;
+  --hr-height: 1em;
+  --heading-style: none;
+  --heading-letter-spacing: 0.1rem;
+}
+
+/*:::[ remove space from first item on page ]:::::*/
+.cm-content > :first-child, .cm-contentContainer > :first-child {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+
+.cm-content > .cm-line:has(br):first-child + :not(.cm-line:has(br)),
+.cm-contentContainer > .cm-line:has(br):first-child + :not(.cm-line:has(br)) {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/*:::[ Custom checkboxes ]:::::*/
+/* Lock the "#" checkbox (Always On) */
+li[data-task="#"] .task-list-item-checkbox {
+  pointer-events: none;
+  cursor: pointer;
+}
+
+/* Lock the "_" checkbox (Always Off) */
+li[data-task="$"] .task-list-item-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 1px solid var(--checkbox-border-color);
+  border-radius: var(--checkbox-radius);
+  position: relative;
+  pointer-events: none;
+  cursor: pointer;
+}
+
+/*:::[ Divider ]:::::*/
+hr {
+  border: none !important;
+  width: 100%;
+  background-color: var(--hr-color);
+  height: var(--hr-thickness);
+  margin-top: calc((var(--hr-height) / 2) - 1px) !important;
+  margin-bottom: calc((var(--hr-height) / 2) - 1px) !important;
+}
+
+.cm-line:has(hr) {
+  height: calc(var(--hr-height) - var(--hr-thickness));
+}
+
+
+
+/*:::[ Costom html tag to collapse space ]:::::*/
+
+/* <area class="collapse"> */
+
+/* .markdown-source-view .cm-line {
+  &:not(.cm-active):has(area.collapse),
+  &:not(.cm-active):has(+ .cm-line area.collapse),
+  &:has(area.collapse) + .cm-line:not(.cm-active) {
+    display: none;
+  }
+} */
+
+/* .markdown-source-view .cm-line {
+  &:not(.cm-active):has(area.collapse):not(    :not(.cm-active):has(+ .cm-line area.collapse)   :has(area.collapse) + .cm-line:not(.cm-active)),
+  &:not(.cm-active):has(+ .cm-line area.collapse):not(   :not(.cm-active):has(area.collapse)   :has(area.collapse) + .cm-line:not(.cm-active)),
+  &:has(area.collapse) + .cm-line:not(.cm-active):not(   :not(.cm-active):has(area.collapse) :not(.cm-active):has(+ .cm-line area.collapse)) {
+    display: none;
+  }
+} */
+
+
+/* .markdown-source-view .cm-line {
+  &:not(.cm-active):has(area.collapse),
+  &:not(.cm-active):has(+ .cm-line area.collapse),
+  &:has(area.collapse) + .cm-line:not(.cm-active) {
+    display: none;
+  }
+} */
+
+/*:::[ Make bullets square ]:::::*/
+.list-bullet {
+  padding-right: 0.5em;
+
+  &::after {
+    font-size: 1.7em;
+    content: "▪";
+    color: var(--list-marker-color);
+    border-radius: unset;
+    width: unset;
+    height: unset;
+    border: unset;
+    background-color: unset;
+  }
+}
+
+/*:::[ Style headings ]:::::*/
+.iconize-inline-title-wrapper {
+  max-width: 100%;
+  width: 100%;
+}
+
+.inline-title {
+  letter-spacing: calc(var(--heading-letter-spacing) * 1.02) !important;
+  text-transform: var(--heading-style);
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+.HyperMD-header-1, h1,
+.HyperMD-header-2, h2,
+.HyperMD-header-3, h3,
+.HyperMD-header-4, h4,
+.HyperMD-header-5, h5,
+.HyperMD-header-6, h6 {
+  text-transform: var(--heading-style) !important;
+  letter-spacing: var(--heading-letter-spacing) !important;
+  padding-bottom: 0.1em !important;
+}
+
+/*:::[ Style callouts ]:::::*/
+.markdown-rendered .callout {
+  overflow-wrap: anywhere;
+  --callout-padding: var(--size-4-4) var(--size-4-4) var(--size-4-4) var(--size-4-4);
+
+  ol ol > li,
+  ul ul > li {
+    &:not(.task-list-item) {
+      margin-inline-start: calc(var(--list-indent) + 2px);
+    }
+  }
+
+  ul > li {
+    &:not(.task-list-item) {
+      margin-inline-start: calc(3ch + 2px);
+      list-style: square;
+    }
+
+    input[type="radio"], input[type=checkbox]  {
+      margin-inline-end: 8px;
+    }
+  }
+
+  & > .callout-content > :is(h1, h2, h3, h4, h5, h6) {
+    padding-top: calc(var(--p-spacing) / 2);
+    margin-top: 0;
+    margin-bottom: 0;
+    /* margin-block-start: calc(var(--heading-spacing) / 2) !important; */
+  }
+
+  .callout-content .callout {
+    margin: 0;
+  }
+
+  .callout:has(+ .callout) {
+    margin-bottom: 1lh;
+  }
+
+  .callout-title {
+    margin-bottom: -0.1em;
+    align-items: center;
+  }
+
+  .callout-icon {
+    margin-right: 10px;
+    transform: scale(1.2);
+  }
+
+  .callout-fold {
+    margin-left: 5px;
+  }
+
+  .callout-content {
+
+    & *:not(hr) {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.cm-callout:has(+ .cm-line) {
+  &+.cm-line:has(br) {
+    display: none;
+  }
+  
+  margin-bottom: 0lh !important;
+}
+
+/*:::[ edited callouts ]:::::*/
+.callout[data-callout="danger"] {
+  --callout-icon: lucide-triangle-alert;
+}
+
+/*:::[ custom callouts ]:::::*/
+.callout[data-callout="section"] {
+  --callout-color: 0, 0, 0, 0;
+    border: 2px solid var(--hr-color);
+  --callout-icon: "";
+
+  .callout-icon {
+    display: none;
+  }
+
+  .callout-title {
+    color: var(--text-normal);
+  }
+}
+
+.callout[data-callout="menu"] {
+  --callout-color: 0, 0, 0, 0;
+  border: 2px solid var(--hr-color);
+  --callout-icon: lucide-menu;
+
+  .callout-title, 
+  .callout-icon .svg-icon {
+    color: var(--text-normal);
+  }
+
+  .callout-icon svg.svg-icon {
+    height: auto;
+    width: auto;
+  }
+
+
+    ol ol > li,
+  ul ul > li {
+    &:not(.task-list-item) {
+      margin-inline-start: calc(var(--list-indent) + 2px);
+    }
+  }
+
+  ul > li {
+    display: flex;
+    align-items: center;
+    transition: padding-left 0.07s cubic-bezier(1,0,0,1.53), background-color 0.1s ease;
+
+    --menu-icon-scale: 1.2;
+
+    i, span.cm-iconize-icon {
+      margin-right: 1em;
+    }
+
+    .iconize-icon-in-link {
+      margin-right: 0.8em;
+    }
+
+    i {
+      transform: scale(calc(var(--menu-icon-scale) + 0.1));
+    }
+
+    span.cm-iconize-icon {
+      /* transform: translateY(-13%) !important; */
+      margin-left: 0.2em;
+      transform: scale(calc(var(--menu-icon-scale) + 0.25)) !important;
+    }
+
+    .iconize-icon-in-link {
+      margin-left: 0.2em;
+      transform: scale(calc(var(--menu-icon-scale) + 0.25)) !important;
+    }
+
+    &:not(.task-list-item) {
+      margin-inline-start: 0;
+      padding-left: 0.5em;
+      list-style: none;
+      border-radius: 3px;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 0.2em;
+    }
+
+    a, a:visited, a:hover, a:active {
+      color: var(--text-normal);
+      text-decoration: none;
+    }
+
+    a {
+      display: inline-block;
+      position: relative;
+      z-index: 1; 
+      padding-top: 0.25em;
+      padding-bottom: 0.25em;
+      
+      /* 1. Add back the width you shifted */
+      width: calc(100% + 55px); 
+      
+      font-size: var(--h5-size);
+      padding-left: 55px;
+      margin-left: -55px;
+    }
+
+    /* &:has(span.cm-iconize-icon, i) a {
+      padding-left: 55px;
+      margin-left: -55px;
+    } */
+
+    /* & a:has(.iconize-icon-in-link) {
+      padding-left: 300px;
+      margin-left: -300px;
+    } */
+
+    &:hover {
+      padding-left: 1.0em;
+      /* background-color: hsl(var(--text-selection)); */
+      background-color: hsla(var(--accent-h), 50%, 40%, 20%);
+      /* background-color: hsl(
+        var(--base-h),
+        var(--base-s),
+        calc(var(--base-l) + 6%)
+      ); */
+    }
+  }
+
+
+}
+
+/*:::[ Table ]:::::*/
+.table-wrapper, 
+.callout {
+  --table-selection-border-color: hsla(var(--base-h), var(--base-s), calc(var(--base-l) + 30%), 0.5);
+  --table-selection-color: hsla(0, 0%, 100%, 0.07);
+
+  table, 
+  thead, 
+  tbody, 
+  th, 
+  td, 
+  tr {
+    border: 2px solid var(--hr-color);
+  }
+
+  .table-cell-wrapper {
+    height: auto !important;
+    padding: 0px !important;
+  }
+
+  th, td {
+    padding: 8px !important;
+    overflow-wrap: break-word !important;
+    /* text-align: center !important;  */
+    vertical-align: middle !important;
+  }
+
+
+  th {
+    /* white-space: nowrap !important; */
+    font-weight: bold;
+    background-color: hsla(0, 0%, 0%, 0.12) !important;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: hsla(0, 0%, 100%, 0.02) !important;
+  }
+
+  table:has(tbody tr:first-child:hover) thead th {
+    border-bottom-color: var(--table-selection-border-color);
+  }
+
+  tbody tr:hover {
+    background-color: var(--table-selection-color) !important;
+    border-color: var(--table-selection-border-color);
+
+    :has(+ &) td {
+      border-bottom-color: var(--table-selection-border-color);
+    }
+
+    td {
+      border-color: var(--table-selection-border-color);
+    }
+  }
+
+}

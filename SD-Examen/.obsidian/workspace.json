@@ -1,0 +1,246 @@
+{
+  "main": {
+    "id": "76a3d1f5902ea1ce",
+    "type": "split",
+    "children": [
+      {
+        "id": "44e6babf0966a1f4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "276f14fd69e7f56f",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "340d4551b3cb503b",
+    "type": "split",
+    "children": [
+      {
+        "id": "81ec239c988126ce",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bc831944453341b0",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "custom",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "132f230f84770388",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "#^taken-",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "338a93950144e6ea",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          },
+          {
+            "id": "8c98c2ac66ba2c2b",
+            "type": "leaf",
+            "state": {
+              "type": "runjs-codelist-view",
+              "state": {},
+              "icon": "js-dark-icon",
+              "title": "RunJS Codelist"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "317b0f3dd1eaa782",
+    "type": "split",
+    "children": [
+      {
+        "id": "5faf951031bbbae0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0b3495db1a040200",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Welcome.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Welcome"
+            }
+          },
+          {
+            "id": "33eef631688be3f2",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Welcome.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Welcome"
+            }
+          },
+          {
+            "id": "05a29c1c58fa15df",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "5735248e4e92abb0",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Welcome.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Welcome"
+            }
+          },
+          {
+            "id": "e8c406fe688d4e69",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "runjs:RunJS": false,
+      "workspaces:Manage workspace layouts": false,
+      "switcher:Open quick switcher": false,
+      "daily-notes:Open today's daily note": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": true,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": true,
+      "bases:Create new base": true,
+      "markdown-importer:Open format converter": false,
+      "hide-folders:Show hidden folders": false
+    }
+  },
+  "active": "276f14fd69e7f56f",
+  "lastOpenFiles": [
+    "Examen Info/B1-K1 - Realiseert software/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang/C1 - User Stories.md",
+    "Checklists/Project/Middelen/Github Template.md",
+    "Dashboard.md",
+    "Checklists/Project/Dag 1 - Maandag 11 Mei.md",
+    "Checklists/Project/Info.md",
+    "Checklists/Project/Middelen/Middelen.md",
+    "Checklists/Project/Middelen/Prompts.md",
+    "Checklists/Project/Project.md",
+    "Checklists/Project/Notities.md",
+    "Checklists/Kandidaten/Florian/Florian.md",
+    "Checklists/Kandidaten/Dylan/Dylan.md",
+    "Checklists/Kandidaten/Jurgen/Jurgen.md",
+    "Examen Info/B1-K1 - Realiseert software/W2 - Maakt een technisch ontwerp voor software/C2 - Schema Technieken.md",
+    "Examen Info/B1-K1 - Realiseert software/W2 - Maakt een technisch ontwerp voor software/W2 - Maakt een technisch ontwerp voor software.md",
+    "Examen Info/B1-K1 - Realiseert software/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang.md",
+    "Checklists/Kandidaten/Dylan/Dag 1 - Maandag 11 Mei.md",
+    "Checklists/Kandidaten/Jurgen/Dag 1 - Maandag 11 Mei.md",
+    "Checklists/Kandidaten/Kandidaten.md",
+    "Checklists/Project/Dag 6 - Donderdag 21 Mei.md",
+    "Checklists/Kandidaten/Jurgen/Dag 5 - Dinsdag 19 Mei.md",
+    "Checklists/Kandidaten/Jurgen/Dag 4 - Maandag 18 Mei.md",
+    "Checklists/Kandidaten/Jurgen/Dag 3 - Woensdag 13 Mei.md",
+    "Checklists/Kandidaten/Jurgen/Dag 2 - Dinsdag 12 Mei.md",
+    "Checklists/Kandidaten/Jurgen/Dag 6 - Donderdag 21 Mei.md",
+    "Checklists/Kandidaten/Florian/Dag 5 - Dinsdag 19 Mei.md",
+    "Checklists/Kandidaten/Florian/Dag 4 - Maandag 18 Mei.md",
+    "_attachments/Documents",
+    "_attachments/Folder",
+    "_attachments/~$spraken.docx",
+    "_attachments/Afspraken.docx",
+    "Checklists/Project/Middelen",
+    "Examen Info/B1-K1 - Realiseert software/W5 - Doet verbetervoorstellen voor de software/C2 - Verbetervoorstel.md~",
+    "Checklists/Kandidaten/Florian",
+    "Checklists/Kandidaten/Dylan",
+    "Checklists/Kandidaten/Jurgen",
+    "Checklists/Kandidaten",
+    "_attachments/Flowchart example.svg",
+    "_attachments/Flowchart shapes.svg",
+    "_attachments/Use case specifiek.svg",
+    "_attachments/Use case breed.svg",
+    "_attachments/Exclude example.svg",
+    "_attachments/Include example.svg",
+    "_attachments/Wireframe Example.svg",
+    "_attachments/Crowsfeet Example.svg",
+    "_attachments/ERD Example.svg",
+    "Untitled.canvas"
+  ]
+}

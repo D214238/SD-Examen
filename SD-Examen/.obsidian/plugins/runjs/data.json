@@ -1,0 +1,36 @@
+{
+  "autoRefresh": true,
+  "autostarts": [
+    [
+      "Startup/Tailwind",
+      true
+    ],
+    [
+      "Startup/Custom fonts",
+      true
+    ]
+  ],
+  "commands": {},
+  "ribbonIcons": [],
+  "eventHandlers": [],
+  "scriptsFolder": ".obsidian/scripts",
+  "logFilePath": "",
+  "logConsole": true,
+  "logNotice": true,
+  "logFile": false,
+  "listviewOpenType": "tab",
+  "listviewSortField": "name",
+  "listviewSortAsc": true,
+  "listviewFilters": {
+    "type": [
+      "script",
+      "module"
+    ],
+    "form": [
+      "codeblock",
+      "file"
+    ]
+  },
+  "listviewCollapse": {},
+  "favoriteCodes": []
+}
