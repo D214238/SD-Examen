@@ -1,0 +1,688 @@
+todo
+
+step 1
+
+# 2. Install Breeze
+composer require laravel/breeze --dev
+
+# 3. Install Breeze with Blade stack
+php artisan breeze:install blade
+
+# 4. Install JS dependencies + build
+npm install && npm run build
+
+# 5. Configure your .env database
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=webshop
+DB_USERNAME=root
+DB_PASSWORD=secret
+
+# 6. Create the database, then run default migrations
+php artisan migrate
+
+
+
+Step 2 — Confirm it works
+bashphp artisan serve
+
+step 3
+
+1. Categories
+bashphp artisan make:migration create_categories_table
+Replace the content with:
+php<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    // Create categories table
+    public function up(): void
+    {
+        Schema::create('categories', function (Blueprint $table) {
+            $table->id('category_id');
+            $table->string('name', 50);
+        });
+    }
+
+    // Drop categories table
+    public function down(): void
+    {
+        Schema::dropIfExists('categories');
+    }
+};
+
+2. Products
+bashphp artisan make:migration create_products_table
+php<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    // Create products table
+    public function up(): void
+    {
+        Schema::create('products', function (Blueprint $table) {
+            $table->id('product_id');
+            $table->string('name', 100);
+            $table->text('description')->nullable();
+            $table->decimal('price', 10, 2);
+            $table->foreignId('category_id')->constrained('categories', 'category_id')->restrictOnDelete();
+            $table->integer('stock')->default(0);
+            $table->timestamp('created_at')->useCurrent();
+        });
+    }
+
+    // Drop products table
+    public function down(): void
+    {
+        Schema::dropIfExists('products');
+    }
+};
+
+3. Orders
+bashphp artisan make:migration create_orders_table
+php<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    // Create orders table
+    public function up(): void
+    {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id('order_id');
+            $table->foreignId('user_id')->constrained()->restrictOnDelete();
+            $table->timestamp('order_date')->useCurrent();
+            $table->string('status', 50)->default('pending');
+        });
+    }
+
+    // Drop orders table
+    public function down(): void
+    {
+        Schema::dropIfExists('orders');
+    }
+};
+
+4. Order Items
+bashphp artisan make:migration create_order_items_table
+php<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    // Create order_items table
+    public function up(): void
+    {
+        Schema::create('order_items', function (Blueprint $table) {
+            $table->id('order_item_id');
+            $table->foreignId('order_id')->constrained('orders', 'order_id')->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained('products', 'product_id')->restrictOnDelete();
+            $table->integer('quantity')->default(1);
+        });
+    }
+
+    // Drop order_items table
+    public function down(): void
+    {
+        Schema::dropIfExists('order_items');
+    }
+};
+
+5. Cart Items
+bashphp artisan make:migration create_cart_items_table
+php<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    // Create cart_items table
+    public function up(): void
+    {
+        Schema::create('cart_items', function (Blueprint $table) {
+            $table->id('cart_item_id');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained('products', 'product_id')->cascadeOnDelete();
+            $table->integer('quantity')->default(1);
+            $table->timestamp('added_at')->useCurrent();
+            $table->unique(['user_id', 'product_id']);
+        });
+    }
+
+    // Drop cart_items table
+    public function down(): void
+    {
+        Schema::dropIfExists('cart_items');
+    }
+};
+
+6. Page Settings
+bashphp artisan make:migration create_page_settings_table
+php<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    // Create page_settings table
+    public function up(): void
+    {
+        Schema::create('page_settings', function (Blueprint $table) {
+            $table->id('setting_id');
+            $table->string('page_name', 50)->unique();
+            $table->json('settings_json')->nullable();
+        });
+    }
+
+    // Drop page_settings table
+    public function down(): void
+    {
+        Schema::dropIfExists('page_settings');
+    }
+};
+
+Now run them all:
+bashphp artisan migrate
+
+
+Step 3 — Models
+Run all make commands first:
+bashphp artisan make:model Category
+php artisan make:model Product
+php artisan make:model Order
+php artisan make:model OrderItem
+php artisan make:model CartItem
+php artisan make:model PageSetting
+Then replace each model file content:
+
+app/Models/Category.php
+php<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Category extends Model
+{
+    public $timestamps = false;
+    protected $primaryKey = 'category_id';
+    protected $fillable = ['name'];
+
+    // A category has many products
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'category_id');
+    }
+}
+
+app/Models/Product.php
+php<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
+{
+    public $timestamps = false;
+    protected $primaryKey = 'product_id';
+    protected $fillable = ['name', 'description', 'price', 'category_id', 'stock'];
+
+    // A product belongs to a category
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'category_id');
+    }
+
+    // A product has many order items
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'product_id', 'product_id');
+    }
+
+    // A product has many cart items
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class, 'product_id', 'product_id');
+    }
+}
+
+app/Models/Order.php
+php<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Order extends Model
+{
+    public $timestamps = false;
+    protected $primaryKey = 'order_id';
+    protected $fillable = ['user_id', 'order_date', 'status'];
+
+    // An order belongs to a user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // An order has many order items
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'order_id', 'order_id');
+    }
+}
+
+app/Models/OrderItem.php
+php<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class OrderItem extends Model
+{
+    public $timestamps = false;
+    protected $primaryKey = 'order_item_id';
+    protected $fillable = ['order_id', 'product_id', 'quantity'];
+
+    // An order item belongs to an order
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'order_id');
+    }
+
+    // An order item belongs to a product
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'product_id');
+    }
+}
+
+app/Models/CartItem.php
+php<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class CartItem extends Model
+{
+    public $timestamps = false;
+    protected $primaryKey = 'cart_item_id';
+    protected $fillable = ['user_id', 'product_id', 'quantity'];
+
+    // A cart item belongs to a user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // A cart item belongs to a product
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'product_id');
+    }
+}
+
+app/Models/PageSetting.php
+php<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class PageSetting extends Model
+{
+    public $timestamps = false;
+    protected $primaryKey = 'setting_id';
+    protected $fillable = ['page_name', 'settings_json'];
+
+    // Cast settings_json to array automatically
+    protected $casts = ['settings_json' => 'array'];
+}
+
+Also update app/Models/User.php — add the relationships at the bottom of the class:
+php// A user has many orders
+public function orders()
+{
+    return $this->hasMany(Order::class);
+}
+
+// A user has many cart items
+public function cartItems()
+{
+    return $this->hasMany(CartItem::class);
+}
+
+
+
+Step 3 — Models
+Run all make commands first:
+bashphp artisan make:model Category
+php artisan make:model Product
+php artisan make:model Order
+php artisan make:model OrderItem
+php artisan make:model CartItem
+php artisan make:model PageSetting
+Then replace each model file content:
+
+app/Models/Category.php
+php<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Category extends Model
+{
+    public $timestamps = false;
+    protected $primaryKey = 'category_id';
+    protected $fillable = ['name'];
+
+    // A category has many products
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'category_id');
+    }
+}
+
+app/Models/Product.php
+php<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
+{
+    public $timestamps = false;
+    protected $primaryKey = 'product_id';
+    protected $fillable = ['name', 'description', 'price', 'category_id', 'stock'];
+
+    // A product belongs to a category
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'category_id');
+    }
+
+    // A product has many order items
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'product_id', 'product_id');
+    }
+
+    // A product has many cart items
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class, 'product_id', 'product_id');
+    }
+}
+
+app/Models/Order.php
+php<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Order extends Model
+{
+    public $timestamps = false;
+    protected $primaryKey = 'order_id';
+    protected $fillable = ['user_id', 'order_date', 'status'];
+
+    // An order belongs to a user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // An order has many order items
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'order_id', 'order_id');
+    }
+}
+
+app/Models/OrderItem.php
+php<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class OrderItem extends Model
+{
+    public $timestamps = false;
+    protected $primaryKey = 'order_item_id';
+    protected $fillable = ['order_id', 'product_id', 'quantity'];
+
+    // An order item belongs to an order
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'order_id');
+    }
+
+    // An order item belongs to a product
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'product_id');
+    }
+}
+
+app/Models/CartItem.php
+php<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class CartItem extends Model
+{
+    public $timestamps = false;
+    protected $primaryKey = 'cart_item_id';
+    protected $fillable = ['user_id', 'product_id', 'quantity'];
+
+    // A cart item belongs to a user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // A cart item belongs to a product
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'product_id');
+    }
+}
+
+app/Models/PageSetting.php
+php<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class PageSetting extends Model
+{
+    public $timestamps = false;
+    protected $primaryKey = 'setting_id';
+    protected $fillable = ['page_name', 'settings_json'];
+
+    // Cast settings_json to array automatically
+    protected $casts = ['settings_json' => 'array'];
+}
+
+Also update app/Models/User.php — add the relationships at the bottom of the class:
+php// A user has many orders
+public function orders()
+{
+    return $this->hasMany(Order::class);
+}
+
+// A user has many cart items
+public function cartItems()
+{
+    return $this->hasMany(CartItem::class);
+}
+
+
+
+Step 5 — web.php + Welcome Page
+
+routes/web.php
+php<?php
+
+use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PageSettingController;
+use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Route;
+
+// Welcome / shop homepage
+Route::get('/', [ProductController::class, 'index'])->name('home');
+
+// Public product view
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+// Authenticated routes
+Route::middleware('auth')->group(function () {
+    // Cart
+    Route::get('/cart', [CartItemController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [CartItemController::class, 'store'])->name('cart.store');
+    Route::patch('/cart/{cartItem}', [CartItemController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/{cartItem}', [CartItemController::class, 'destroy'])->name('cart.destroy');
+    Route::post('/cart/checkout', [CartItemController::class, 'checkout'])->name('cart.checkout');
+
+    // Orders
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+    Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+
+    // Admin routes
+    Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+        Route::resource('categories', CategoryController::class)->except('show');
+        Route::resource('products', ProductController::class)->except('show');
+        Route::resource('pagesettings', PageSettingController::class)->except('show');
+    });
+});
+
+require __DIR__.'/auth.php';
+
+Update ProductController@index to support the homepage (paginated, with search):
+php// Show all products paginated with optional search
+public function index(Request $request)
+{
+    $products = Product::with('category')
+        ->when($request->search, fn($q) => $q->where('name', 'like', '%' . $request->search . '%'))
+        ->paginate(12);
+    return view('welcome', compact('products'));
+}
+
+resources/views/welcome.blade.php — replace the entire file:
+html<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webshop</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+    {{-- Navbar --}}
+    <nav class="bg-white shadow px-6 py-4 flex items-center justify-between">
+        <a href="{{ route('home') }}" class="text-xl font-bold text-indigo-600">🛒 Webshop</a>
+        <form method="GET" action="{{ route('home') }}" class="flex gap-2">
+            <input type="text" name="search" value="{{ request('search') }}"
+                placeholder="Search products..."
+                class="border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <button class="bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-sm hover:bg-indigo-700">Search</button>
+        </form>
+        <div class="flex items-center gap-4 text-sm">
+            @auth
+                <a href="{{ route('cart.index') }}" class="text-gray-600 hover:text-indigo-600">🛒 Cart</a>
+                <a href="{{ route('orders.index') }}" class="text-gray-600 hover:text-indigo-600">📦 Orders</a>
+                <a href="{{ route('admin.products.index') }}" class="text-gray-600 hover:text-indigo-600">⚙️ Admin</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button class="text-red-500 hover:text-red-700">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="text-gray-600 hover:text-indigo-600">Login</a>
+                <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-4 py-1.5 rounded-lg hover:bg-indigo-700">Register</a>
+            @endauth
+        </div>
+    </nav>
+
+    {{-- Flash message --}}
+    @if(session('success'))
+        <div class="max-w-7xl mx-auto mt-4 px-6">
+            <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-lg">
+                {{ session('success') }}
+            </div>
+        </div>
+    @endif
+
+    {{-- Product grid --}}
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">All Products</h1>
+        @if($products->isEmpty())
+            <p class="text-gray-500">No products found.</p>
+        @else
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                @foreach($products as $product)
+                    <div class="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs text-indigo-500 font-medium uppercase">{{ $product->category->name ?? '—' }}</span>
+                            <h2 class="text-gray-800 font-semibold mt-1">{{ $product->name }}</h2>
+                            <p class="text-gray-500 text-sm mt-1 line-clamp-2">{{ $product->description }}</p>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-indigo-600 font-bold">€{{ number_format($product->price, 2) }}</span>
+                            <span class="text-xs text-gray-400">Stock: {{ $product->stock }}</span>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <a href="{{ route('products.show', $product) }}"
+                                class="flex-1 text-center text-sm border border-indigo-600 text-indigo-600 rounded-lg py-1.5 hover:bg-indigo-50">
+                                View
+                            </a>
+                            @auth
+                                <form method="POST" action="{{ route('cart.store') }}" class="flex-1">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->product_id }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button class="w-full text-sm bg-indigo-600 text-white rounded-lg py-1.5 hover:bg-indigo-700">
+                                        Add to Cart
+                                    </button>
+                                </form>
+                            @endauth
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div class="mt-8">{{ $products->links() }}</div>
+        @endif
+    </main>
+
+</body>
+</html>
+
+Then rebuild assets:
+bashnpm run build
