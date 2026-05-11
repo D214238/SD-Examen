@@ -11,10 +11,14 @@
             "id": "276f14fd69e7f56f",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "Checklists/Project/Casus.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "Casus"
             }
           }
         ]
@@ -49,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "#^taken-",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -76,8 +80,8 @@
             "state": {
               "type": "runjs-codelist-view",
               "state": {},
-              "icon": "js-dark-icon",
-              "title": "RunJS Codelist"
+              "icon": "lucide-ghost",
+              "title": "runjs-codelist-view"
             }
           }
         ]
@@ -180,8 +184,6 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "obsidian-excalidraw-plugin:New drawing": false,
-      "runjs:RunJS": false,
       "workspaces:Manage workspace layouts": false,
       "switcher:Open quick switcher": false,
       "daily-notes:Open today's daily note": false,
@@ -191,37 +193,39 @@
       "command-palette:Open command palette": true,
       "bases:Create new base": true,
       "markdown-importer:Open format converter": false,
+      "runjs:RunJS": false,
+      "obsidian-excalidraw-plugin:New drawing": false,
       "hide-folders:Show hidden folders": false
     }
   },
-  "active": "276f14fd69e7f56f",
+  "active": "bc831944453341b0",
   "lastOpenFiles": [
+    "Checklists/Project/Info.md",
+    "Checklists/Project/Casus.md",
+    "Checklists/Project/Notities.md",
+    "Checklists/Project/Untitled.md",
+    "Checklists/Project/Project.md",
+    "Checklists/Project/Dag 2 - Dinsdag 12 Mei.md",
+    "Checklists/Kandidaten/Jurgen/Jurgen.md",
+    "Checklists/Kandidaten/Jurgen/Dag 1 - Maandag 11 Mei.md",
+    "Checklists/Kandidaten/Jurgen/Notities.md",
     "Examen Info/B1-K1 - Realiseert software/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang/C1 - User Stories.md",
     "Checklists/Project/Middelen/Github Template.md",
     "Dashboard.md",
     "Checklists/Project/Dag 1 - Maandag 11 Mei.md",
-    "Checklists/Project/Info.md",
     "Checklists/Project/Middelen/Middelen.md",
     "Checklists/Project/Middelen/Prompts.md",
-    "Checklists/Project/Project.md",
-    "Checklists/Project/Notities.md",
     "Checklists/Kandidaten/Florian/Florian.md",
     "Checklists/Kandidaten/Dylan/Dylan.md",
-    "Checklists/Kandidaten/Jurgen/Jurgen.md",
     "Examen Info/B1-K1 - Realiseert software/W2 - Maakt een technisch ontwerp voor software/C2 - Schema Technieken.md",
     "Examen Info/B1-K1 - Realiseert software/W2 - Maakt een technisch ontwerp voor software/W2 - Maakt een technisch ontwerp voor software.md",
     "Examen Info/B1-K1 - Realiseert software/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang/W1 - Stemt opdracht af, plant werkzaamheden en bewaakt de voortgang.md",
     "Checklists/Kandidaten/Dylan/Dag 1 - Maandag 11 Mei.md",
-    "Checklists/Kandidaten/Jurgen/Dag 1 - Maandag 11 Mei.md",
     "Checklists/Kandidaten/Kandidaten.md",
     "Checklists/Project/Dag 6 - Donderdag 21 Mei.md",
     "Checklists/Kandidaten/Jurgen/Dag 5 - Dinsdag 19 Mei.md",
     "Checklists/Kandidaten/Jurgen/Dag 4 - Maandag 18 Mei.md",
     "Checklists/Kandidaten/Jurgen/Dag 3 - Woensdag 13 Mei.md",
-    "Checklists/Kandidaten/Jurgen/Dag 2 - Dinsdag 12 Mei.md",
-    "Checklists/Kandidaten/Jurgen/Dag 6 - Donderdag 21 Mei.md",
-    "Checklists/Kandidaten/Florian/Dag 5 - Dinsdag 19 Mei.md",
-    "Checklists/Kandidaten/Florian/Dag 4 - Maandag 18 Mei.md",
     "_attachments/Documents",
     "_attachments/Folder",
     "_attachments/~$spraken.docx",

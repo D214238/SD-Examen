@@ -30,8 +30,17 @@
     },
     "_attachments/Documents": {
       "children": [
-        "_attachments/Documents/Folder.md",
-        "_attachments/Documents/Documents.md"
+        "_attachments/Documents/Documents.md",
+        "_attachments/Documents/Acceptatie Tests.xlsx",
+        "_attachments/Documents/Afspraken.docx",
+        "_attachments/Documents/Burnddown.xlsx",
+        "_attachments/Documents/Technische Tests.xlsx",
+        "_attachments/Documents/Test Rapport.docx",
+        "_attachments/Documents/Testplan & DoD.docx",
+        "_attachments/Documents/User Stories.xlsx",
+        "_attachments/Documents/User Stories Sprint-2.xlsx",
+        "_attachments/Documents/Verbetervoorstel.docx",
+        "_attachments/Documents/Verbetervoorstel.xlsx"
       ],
       "sortOrder": "custom"
     },
@@ -95,6 +104,7 @@
       "children": [
         "Checklists/Project/Project.md",
         "Checklists/Project/Info.md",
+        "Checklists/Project/Casus.md",
         "Checklists/Project/Notities.md",
         "Checklists/Project/Dag 1 - Maandag 11 Mei.md",
         "Checklists/Project/Dag 2 - Dinsdag 12 Mei.md",

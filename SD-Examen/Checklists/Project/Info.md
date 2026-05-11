@@ -57,5 +57,3 @@
 - Utilities
 	- _Hier definieer je providers die een utility binden_
 	- ExportUtilityProvider
-
-- 
