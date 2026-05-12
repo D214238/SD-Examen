@@ -1,0 +1,412 @@
+**login.blade.php
+{
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Inloggen — {{ config('app.name', 'Laravel') }}</title>
+
+    {{-- Google Fonts --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        :root {
+            --ink:        #0f0e0d;
+            --paper:      #f5f2ee;
+            --cream:      #ede9e3;
+            --accent:     #c94f2c;
+            --accent-dk:  #a83d1e;
+            --muted:      #7a7269;
+            --border:     #d6d0c8;
+            --shadow:     rgba(15,14,13,.08);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--paper);
+            color: var(--ink);
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .panel-left {
+            background-color: var(--ink);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel-left::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 20% 110%, rgba(201,79,44,.35) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 90% -10%, rgba(201,79,44,.18) 0%, transparent 55%);
+            pointer-events: none;
+        }
+
+        .brand { display: flex; align-items: center; gap: .75rem; position: relative; z-index: 1; }
+        .brand-icon { width: 40px; height: 40px; background: var(--accent); border-radius: 10px; display: grid; place-items: center; }
+        .brand-icon svg { width: 22px; height: 22px; fill: #fff; }
+        .brand-name { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: #fff; letter-spacing: -.01em; }
+
+        .panel-left-body { position: relative; z-index: 1; }
+        .panel-left-body h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.2rem, 4vw, 3.2rem); color: #fff; line-height: 1.1; margin-bottom: 1.25rem; }
+        .panel-left-body h1 em { font-style: italic; color: var(--accent); }
+        .panel-left-body p { color: rgba(255,255,255,.55); font-size: .95rem; line-height: 1.7; max-width: 30ch; }
+        .panel-left-footer { color: rgba(255,255,255,.3); font-size: .8rem; position: relative; z-index: 1; }
+
+        .panel-right { display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+        .card { width: 100%; max-width: 420px; }
+        .card-header { margin-bottom: 2.5rem; }
+        .card-header h2 { font-family: 'DM Serif Display', serif; font-size: 2rem; letter-spacing: -.02em; margin-bottom: .4rem; }
+        .card-header p { color: var(--muted); font-size: .9rem; }
+
+        .alert { background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: .85rem 1rem; margin-bottom: 1.5rem; font-size: .875rem; color: #b91c1c; }
+        .alert ul { padding-left: 1.1rem; }
+        .alert li + li { margin-top: .25rem; }
+
+        .status { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: .85rem 1rem; margin-bottom: 1.5rem; font-size: .875rem; color: #15803d; }
+
+        .form-group { margin-bottom: 1.25rem; }
+
+        label { display: block; font-size: .825rem; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; color: var(--muted); margin-bottom: .5rem; }
+
+        input[type="email"], input[type="password"], input[type="text"] {
+            width: 100%; padding: .8rem 1rem; border: 1.5px solid var(--border); border-radius: 10px;
+            background: #fff; font-family: 'DM Sans', sans-serif; font-size: .95rem; color: var(--ink);
+            transition: border-color .18s, box-shadow .18s; outline: none;
+        }
+
+        input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,79,44,.12); }
+        .input-error { border-color: #ef4444 !important; }
+        .error-msg { font-size: .8rem; color: #ef4444; margin-top: .35rem; }
+
+        .row-options { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.75rem; }
+
+        .checkbox-label { display: flex; align-items: center; gap: .5rem; cursor: pointer; font-size: .875rem; color: var(--muted); text-transform: none; font-weight: 400; letter-spacing: 0; }
+        input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+
+        .forgot-link { font-size: .875rem; color: var(--accent); text-decoration: none; font-weight: 500; transition: color .15s; }
+        .forgot-link:hover { color: var(--accent-dk); text-decoration: underline; }
+
+        .btn-submit {
+            width: 100%; padding: .9rem 1.5rem; background: var(--accent); color: #fff; border: none;
+            border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: .5rem;
+            transition: background .18s, transform .12s, box-shadow .18s;
+            box-shadow: 0 4px 14px rgba(201,79,44,.3);
+        }
+        .btn-submit:hover { background: var(--accent-dk); box-shadow: 0 6px 20px rgba(201,79,44,.35); transform: translateY(-1px); }
+        .btn-submit:active { transform: translateY(0); }
+        .btn-submit svg { width: 18px; height: 18px; }
+
+        .register-link { text-align: center; margin-top: 1.75rem; font-size: .875rem; color: var(--muted); }
+        .register-link a { color: var(--accent); font-weight: 600; text-decoration: none; }
+        .register-link a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            body { grid-template-columns: 1fr; }
+            .panel-left { display: none; }
+            .panel-right { padding: 2rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="panel-left" aria-hidden="true">
+        <div class="brand">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <span class="brand-name">{{ config('app.name', 'Laravel') }}</span>
+        </div>
+        <div class="panel-left-body">
+            <h1>Welkom<br><em>terug.</em></h1>
+            <p>Log in op uw account om verder te gaan waar u gebleven was.</p>
+        </div>
+        <div class="panel-left-footer">
+            &copy; {{ date('Y') }} {{ config('app.name') }}. Alle rechten voorbehouden.
+        </div>
+    </div>
+
+    <div class="panel-right">
+        <div class="card">
+            <div class="card-header">
+                <h2>Inloggen</h2>
+                <p>Voer uw gegevens in om door te gaan</p>
+            </div>
+
+            @if (session('status'))
+                <div class="status" role="alert">{{ session('status') }}</div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert" role="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('login') }}" novalidate>
+                @csrf
+
+                <div class="form-group">
+                    <label for="email">E-mailadres</label>
+                    <input type="email" id="email" name="email" value="{{ old('email') }}"
+                        required autocomplete="username"
+                        class="{{ $errors->has('email') ? 'input-error' : '' }}"
+                        placeholder="naam@voorbeeld.nl">
+                    @error('email')<p class="error-msg">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Wachtwoord</label>
+                    <input type="password" id="password" name="password"
+                        required autocomplete="current-password"
+                        class="{{ $errors->has('password') ? 'input-error' : '' }}"
+                        placeholder="••••••••">
+                    @error('password')<p class="error-msg">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="row-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                        Onthoud mij
+                    </label>
+                    @if (Route::has('password.request'))
+                        <a href="{{ route('password.request') }}" class="forgot-link">Wachtwoord vergeten?</a>
+                    @endif
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Inloggen
+                </button>
+            </form>
+
+            @if (Route::has('register'))
+                <p class="register-link">
+                    Nog geen account? <a href="{{ route('register') }}">Registreren</a>
+                </p>
+            @endif
+        </div>
+    </div>
+
+</body>
+</html>
+}
+
+
+**AuthenticatedSessionController.php
+{
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+
+class AuthenticatedSessionController extends Controller
+{
+    public function create(): View
+    {
+        return view('auth.login');
+    }
+
+    public function store(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+        $request->session()->regenerate();
+        return redirect()->intended(route('dashboard', absolute: false));
+    }
+
+    public function destroy(Request $request): RedirectResponse
+    {
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+    }
+}
+}
+
+
+**LoginRequest.php
+{
+<?php
+
+namespace App\Http\Requests\Auth;
+
+use Illuminate\Auth\Events\Lockout;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+
+class LoginRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'email'    => ['required', 'string', 'email'],
+            'password' => ['required', 'string'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'email.required'    => 'Het e-mailadres is verplicht.',
+            'email.email'       => 'Voer een geldig e-mailadres in.',
+            'password.required' => 'Het wachtwoord is verplicht.',
+        ];
+    }
+
+    public function authenticate(): void
+    {
+        $this->ensureIsNotRateLimited();
+
+        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+            RateLimiter::hit($this->throttleKey());
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+
+        RateLimiter::clear($this->throttleKey());
+    }
+
+    public function ensureIsNotRateLimited(): void
+    {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+            return;
+        }
+
+        event(new Lockout($this));
+
+        $seconds = RateLimiter::availableIn($this->throttleKey());
+
+        throw ValidationException::withMessages([
+            'email' => trans('auth.throttle', [
+                'seconds' => $seconds,
+                'minutes' => ceil($seconds / 60),
+            ]),
+        ]);
+    }
+
+    public function throttleKey(): string
+    {
+        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
+    }
+}
+}
+
+
+**routes/auth.php
+{
+<?php
+
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware('guest')->group(function () {
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+});
+}
+
+
+**routes/web.php
+{
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+require __DIR__ . '/auth.php';
+}
+
+
+**lang/nl/auth.php
+{
+<?php
+
+return [
+    'failed'   => 'Deze gegevens komen niet overeen met onze administratie.',
+    'password' => 'Het opgegeven wachtwoord is onjuist.',
+    'throttle' => 'Te veel inlogpogingen. Probeer het opnieuw over :seconds seconden.',
+];
+}
+
+
+**RedirectIfAuthenticated.php
+{
+<?php
+
+namespace App\Http\Middleware;
+
+use App\Providers\RouteServiceProvider;
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
+
+class RedirectIfAuthenticated
+{
+    public function handle(Request $request, Closure $next, string ...$guards): Response
+    {
+        $guards = empty($guards) ? [null] : $guards;
+
+        foreach ($guards as $guard) {
+            if (Auth::guard($guard)->check()) {
+                return redirect(RouteServiceProvider::HOME);
+            }
+        }
+
+        return $next($request);
+    }
+}
+}

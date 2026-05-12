@@ -1,0 +1,409 @@
+================================================================================
+  LARAVEL SEARCH BAR — Products & Categories (Many-to-Many)
+================================================================================
+
+This file contains everything you need:
+  1. Migration (pivot table, if not already set up)
+  2. Models (Product & Category with relationship)
+  3. Controller (SearchController)
+  4. Route
+  5. Blade View (search bar + results)
+
+================================================================================
+  1. DATABASE — Migrations
+================================================================================
+
+--- create_products_table ---
+
+Schema::create('products', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->text('description')->nullable();
+    $table->decimal('price', 10, 2)->nullable();
+    $table->timestamps();
+});
+
+--- create_categories_table ---
+
+Schema::create('categories', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->string('slug')->unique()->nullable();
+    $table->timestamps();
+});
+
+--- create_category_product_pivot_table ---
+
+Schema::create('category_product', function (Blueprint $table) {
+    $table->foreignId('product_id')->constrained()->onDelete('cascade');
+    $table->foreignId('category_id')->constrained()->onDelete('cascade');
+    $table->primary(['product_id', 'category_id']);
+});
+
+
+================================================================================
+  2. MODELS
+================================================================================
+
+--- app/Models/Product.php ---
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
+{
+    protected $fillable = ['name', 'description', 'price'];
+
+    /**
+     * The categories that belong to this product.
+     */
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+}
+
+
+--- app/Models/Category.php ---
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Category extends Model
+{
+    protected $fillable = ['name', 'slug'];
+
+    /**
+     * The products that belong to this category.
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
+    }
+}
+
+
+================================================================================
+  3. CONTROLLER — app/Http/Controllers/SearchController.php
+================================================================================
+
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Http\Request;
+
+class SearchController extends Controller
+{
+    /**
+     * Handle the search request across products and categories.
+     */
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Guard: return empty results if no query given
+        if (empty($query)) {
+            return view('search.results', [
+                'query'      => '',
+                'products'   => collect(),
+                'categories' => collect(),
+            ]);
+        }
+
+        // Search products — also load their categories
+        $products = Product::with('categories')
+            ->where('name', 'LIKE', "%{$query}%")
+            ->orWhere('description', 'LIKE', "%{$query}%")
+            ->orWhereHas('categories', function ($q) use ($query) {
+                // Also match products whose category name contains the query
+                $q->where('name', 'LIKE', "%{$query}%");
+            })
+            ->get();
+
+        // Search categories — also load their products
+        $categories = Category::with('products')
+            ->where('name', 'LIKE', "%{$query}%")
+            ->orWhereHas('products', function ($q) use ($query) {
+                // Also match categories that have products matching the query
+                $q->where('name', 'LIKE', "%{$query}%")
+                  ->orWhere('description', 'LIKE', "%{$query}%");
+            })
+            ->get();
+
+        return view('search.results', compact('query', 'products', 'categories'));
+    }
+
+    /**
+     * AJAX / live-search endpoint — returns JSON.
+     * Call this with: GET /search/live?query=...
+     */
+    public function liveSearch(Request $request)
+    {
+        $query = $request->input('query', '');
+
+        if (strlen($query) < 2) {
+            return response()->json(['products' => [], 'categories' => []]);
+        }
+
+        $products = Product::with('categories')
+            ->where('name', 'LIKE', "%{$query}%")
+            ->orWhere('description', 'LIKE', "%{$query}%")
+            ->limit(8)
+            ->get(['id', 'name', 'price']);
+
+        $categories = Category::where('name', 'LIKE', "%{$query}%")
+            ->limit(5)
+            ->get(['id', 'name']);
+
+        return response()->json(compact('products', 'categories'));
+    }
+}
+
+
+================================================================================
+  4. ROUTES — routes/web.php
+================================================================================
+
+use App\Http\Controllers\SearchController;
+
+// Full page search results
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+// AJAX live-search endpoint
+Route::get('/search/live', [SearchController::class, 'liveSearch'])->name('search.live');
+
+
+================================================================================
+  5. BLADE VIEW — resources/views/search/results.blade.php
+================================================================================
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    {{-- Replace with your actual CSS (Tailwind, Bootstrap, etc.) --}}
+    <style>
+        body { font-family: sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .search-bar { display: flex; gap: 8px; margin-bottom: 32px; }
+        .search-bar input { flex: 1; padding: 12px 16px; font-size: 1rem; border: 2px solid #ccc; border-radius: 8px; }
+        .search-bar button { padding: 12px 24px; background: #2563eb; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; }
+        .search-bar button:hover { background: #1d4ed8; }
+
+        /* Live-search dropdown */
+        .search-wrapper { position: relative; flex: 1; }
+        #live-results { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,.12); z-index: 50; display: none; }
+        #live-results .result-item { padding: 10px 16px; cursor: pointer; border-bottom: 1px solid #f0f0f0; }
+        #live-results .result-item:last-child { border-bottom: none; }
+        #live-results .result-item:hover { background: #f5f5f5; }
+        #live-results .result-item .label { font-size: .75rem; color: #888; text-transform: uppercase; }
+
+        /* Results sections */
+        h2 { font-size: 1.25rem; margin-bottom: 12px; color: #1e293b; }
+        .badge { display: inline-block; background: #e0e7ff; color: #3730a3; font-size: .75rem; padding: 2px 8px; border-radius: 99px; margin: 2px; }
+        .card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+        .card h3 { margin: 0 0 4px; font-size: 1rem; }
+        .card p { margin: 0 0 8px; color: #555; font-size: .9rem; }
+        .no-results { color: #888; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <h1>Search</h1>
+
+    {{-- ── Search Bar ── --}}
+    <form action="{{ route('search') }}" method="GET" autocomplete="off">
+        <div class="search-bar">
+            <div class="search-wrapper">
+                <input
+                    type="text"
+                    name="query"
+                    id="search-input"
+                    placeholder="Search products or categories…"
+                    value="{{ $query ?? '' }}"
+                    autofocus
+                />
+                {{-- Live-search dropdown --}}
+                <div id="live-results"></div>
+            </div>
+            <button type="submit">Search</button>
+        </div>
+    </form>
+
+    {{-- ── Full-Page Results ── --}}
+    @if(isset($query) && $query !== '')
+
+        <p>Results for: <strong>{{ $query }}</strong></p>
+
+        {{-- Products --}}
+        <h2>Products ({{ $products->count() }})</h2>
+
+        @forelse($products as $product)
+            <div class="card">
+                <h3>{{ $product->name }}</h3>
+                @if($product->description)
+                    <p>{{ Str::limit($product->description, 120) }}</p>
+                @endif
+                @if($product->price)
+                    <p><strong>€{{ number_format($product->price, 2) }}</strong></p>
+                @endif
+                <div>
+                    @foreach($product->categories as $category)
+                        <span class="badge">{{ $category->name }}</span>
+                    @endforeach
+                </div>
+            </div>
+        @empty
+            <p class="no-results">No products found.</p>
+        @endforelse
+
+        {{-- Categories --}}
+        <h2 style="margin-top:32px">Categories ({{ $categories->count() }})</h2>
+
+        @forelse($categories as $category)
+            <div class="card">
+                <h3>{{ $category->name }}</h3>
+                <p>{{ $category->products->count() }} product(s) in this category</p>
+                <div>
+                    @foreach($category->products->take(5) as $product)
+                        <span class="badge">{{ $product->name }}</span>
+                    @endforeach
+                    @if($category->products->count() > 5)
+                        <span class="badge">+{{ $category->products->count() - 5 }} more</span>
+                    @endif
+                </div>
+            </div>
+        @empty
+            <p class="no-results">No categories found.</p>
+        @endforelse
+
+    @endif
+
+    {{-- ── Live Search JavaScript ── --}}
+    <script>
+        const input       = document.getElementById('search-input');
+        const dropdown    = document.getElementById('live-results');
+        let   debounceTimer;
+
+        input.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            const query = input.value.trim();
+
+            if (query.length < 2) {
+                dropdown.style.display = 'none';
+                dropdown.innerHTML = '';
+                return;
+            }
+
+            debounceTimer = setTimeout(async () => {
+                try {
+                    const res  = await fetch(`{{ route('search.live') }}?query=${encodeURIComponent(query)}`);
+                    const data = await res.json();
+
+                    renderDropdown(data.products, data.categories);
+                } catch (e) {
+                    console.error('Live search error:', e);
+                }
+            }, 250); // 250 ms debounce
+        });
+
+        function renderDropdown(products, categories) {
+            dropdown.innerHTML = '';
+
+            if (!products.length && !categories.length) {
+                dropdown.innerHTML = '<div class="result-item">No results found.</div>';
+                dropdown.style.display = 'block';
+                return;
+            }
+
+            products.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.innerHTML = `<div class="label">Product</div>${p.name}${p.price ? ' — €' + parseFloat(p.price).toFixed(2) : ''}`;
+                item.addEventListener('click', () => {
+                    // Navigate to product page, or fill the input
+                    input.value = p.name;
+                    dropdown.style.display = 'none';
+                    // window.location.href = `/products/${p.id}`; // Uncomment if you have product detail pages
+                });
+                dropdown.appendChild(item);
+            });
+
+            categories.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.innerHTML = `<div class="label">Category</div>${c.name}`;
+                item.addEventListener('click', () => {
+                    input.value = c.name;
+                    dropdown.style.display = 'none';
+                    // window.location.href = `/categories/${c.id}`; // Uncomment if you have category pages
+                });
+                dropdown.appendChild(item);
+            });
+
+            dropdown.style.display = 'block';
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-wrapper')) {
+                dropdown.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+
+================================================================================
+  QUICK SETUP CHECKLIST
+================================================================================
+
+  [ ] 1. Make sure your pivot table is named  category_product
+          (Laravel convention: alphabetical, singular, joined by underscore)
+
+  [ ] 2. Add the belongsToMany() relationships to both models
+          (Product.php  &  Category.php)
+
+  [ ] 3. Create the SearchController and paste the code above
+
+  [ ] 4. Register the two routes in routes/web.php
+
+  [ ] 5. Create the Blade file at:
+          resources/views/search/results.blade.php
+
+  [ ] 6. Link to the search bar from your layout / navbar:
+          <a href="{{ route('search') }}">Search</a>
+          or embed the <form> block directly in your navbar partial.
+
+  [ ] 7. (Optional) Add a database index for faster LIKE queries:
+          $table->index('name');   ← in your products and categories migrations
+
+
+================================================================================
+  NOTES
+================================================================================
+
+  - The search uses SQL LIKE with wildcards (%query%).
+    For larger datasets, consider Laravel Scout + Meilisearch / Algolia
+    for full-text search with better performance.
+
+  - The live-search endpoint is rate-limit friendly (debounced 250 ms client-side).
+    Consider adding throttle middleware server-side:
+    Route::middleware('throttle:60,1')->get('/search/live', ...)
+
+  - Pagination: wrap the Product/Category queries with ->paginate(15)
+    instead of ->get() and add {{ $products->links() }} in the view.
+
+================================================================================
