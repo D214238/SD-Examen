@@ -47,3 +47,51 @@ Route::prefix('admin')
             ->group(__DIR__.'/../routes/admin.php'); // All routes in this file are /admin restricted
     },
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+// =========================================================================
+// STEP 1: REGISTER THE DEDICATED FILE IN bootstrap/app.php
+// =========================================================================
+// This registers routes/admin.php, prepends '/admin', and applies security.
+
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+        then: function () {
+            // Isolates the file to only paths starting with /admin
+            Route::prefix('admin')
+                ->middleware(['web', 'auth', 'role:admin'])
+                ->group(base_path('routes/admin.php'));
+        },
+    );
+
+
+// =========================================================================
+// STEP 2: CREATE THE routes/admin.php FILE
+// =========================================================================
+// Because bootstrap/app.php applies the rules, this file stays completely clean.
+
+<?php
+
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
+use Illuminate\Support\Facades\Route;
+
+// This route resolves automatically to: /admin/dashboard
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+// This route resolves automatically to: /admin/users
+Route::get('/users', [UserController::class, 'index'])->name('admin.users');
