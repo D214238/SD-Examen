@@ -1,0 +1,49 @@
+// =========================================================================
+// STEP 1: REGISTER THE ALIAS IN bootstrap/app.php
+// =========================================================================
+
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->alias([
+        'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+    ]);
+})
+
+
+// =========================================================================
+// STEP 2: PROTECT ONLY /ADMIN ROUTES IN routes/web.php
+// =========================================================================
+
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
+
+// PUBLIC ROUTES: Accessible by anyone
+Route::get('/', function () { return view('welcome'); });
+Route::get('/about', function () { return view('about'); });
+
+// ADMIN ONLY ROUTES: Only impacts paths starting with /admin
+Route::prefix('admin')
+    ->middleware(['auth', 'role:admin'])
+    ->group(function () {
+        
+        // Matches: /admin/dashboard
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+        
+        // Matches: /admin/users
+        Route::get('/users', [UserController::class, 'index'])->name('admin.users');
+        
+    });
+
+
+// =========================================================================
+// OPTIONAL: CHOOSE THE CLEANER DEDICATED FILE APPROACH (bootstrap/app.php)
+// =========================================================================
+
+->withRouting(
+    web: __DIR__.'/../routes/web.php',
+    commands: __DIR__.'/../routes/console.php',
+    then: function () {
+        Route::prefix('admin')
+            ->middleware(['web', 'auth', 'role:admin'])
+            ->group(__DIR__.'/../routes/admin.php'); // All routes in this file are /admin restricted
+    },
+)
