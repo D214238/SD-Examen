@@ -22,7 +22,7 @@ Route::get('/about', function () { return view('about'); });
 
 // ADMIN ONLY ROUTES: Only impacts paths starting with /admin
 Route::prefix('admin')
-    ->middleware(['auth', 'role:admin'])
+    ->middleware(['auth', 'role:admin|superadmin'])
     ->group(function () {
         
         // Matches: /admin/dashboard
@@ -43,7 +43,7 @@ Route::prefix('admin')
     commands: __DIR__.'/../routes/console.php',
     then: function () {
         Route::prefix('admin')
-            ->middleware(['web', 'auth', 'role:admin'])
+            ->middleware(['web', 'auth', 'role:admin|superadmin'])
             ->group(__DIR__.'/../routes/admin.php'); // All routes in this file are /admin restricted
     },
 )
@@ -73,7 +73,7 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function () {
             // Isolates the file to only paths starting with /admin
             Route::prefix('admin')
-                ->middleware(['web', 'auth', 'role:admin'])
+                ->middleware(['web', 'auth', 'role:admin|superadmin'])
                 ->group(base_path('routes/admin.php'));
         },
     );
