@@ -1,0 +1,6 @@
+routes/web.php
+app/Http/Controllers/OrderController.php
+resources/views/orders/index.blade.php
+resources/views/orders/_form.blade.php
+resources/views/orders/create.blade.php
+resources/views/orders/edit.blade.php

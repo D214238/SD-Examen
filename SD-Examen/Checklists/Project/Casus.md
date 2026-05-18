@@ -24,6 +24,7 @@ Dit is voor een webshop genaamd WearMe, gemaakt in laravel 13 met blade, breeze 
 - (kijk goed of ik niks gemist heb, de database structuur kan je wel uit de pagina's halen)
 - verzin zelf de rest
 
+
 # Pagina's
 ## Niet ingelogde gebruikers
 - **Home**
@@ -89,7 +90,6 @@ Dit is voor een webshop genaamd WearMe, gemaakt in laravel 13 met blade, breeze 
 	- item uit kart kunnen halen of extra er in doen
 	- verder naar bestellen > account aanmaken of inloggen
 		- sessie cart wordt in de database geladen
-
 
 
 
@@ -267,4 +267,331 @@ laravel bestandstructuur context:
 	- OrderServiceProvider
 - Utilities
 	- _Hier definieer je providers die een utility binden_
+	- ExportUtilityProvider
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+less recent instructions:
+This is for a webshop called WearMe, built in Laravel 13 with Blade, Breeze, and Spatie (no Livewire), using a MySQL database that sells various wearable items. Think of jewelry, watches, bracelets, necklaces, earrings, and similar products.
+
+# Global Requirements
+- The website, except for the admin panel, should only use 2/3 of the screen width with space on the sides for potential advertisements. the header can spann full width, and the admin stuff can span full width, and the footer can span full width, but the rest of the website should fill 2/3
+- Addresses must be stored in a separate database table linked to a user ID; a user can have multiple addresses.
+- Code must follow the [**PER 3.0**](https://www.php-fig.org/per/coding-style/) coding style.
+- All code is written in English; only the website is in english as well.
+- An order must belong to a user, but it also has a separate address record for the shipping destination.
+- Create as many reusable components as possible instead of large Blade views containing everything.
+	- Preferably, if the same types of components are used across the website, they should exist as separate reusable components, such as tables, forms, form fields, etc. Nearly everything should be componentized.
+- Proper models, factories, and seeders with fake data.
+- the project uses tailwind.
+- This application must use Laravel Breeze and Spatie Laravel Permission for authorization and roles.
+	- There are 3 roles:
+		- user (regular user)
+		- admin (administrator who can manage everything in the admin panel)
+		- superadmin (same as admin, but this account can never be deleted)
+- Input fields must be validated both on the frontend with HTML validation and on the backend in Laravel using Form Requests.
+- The main accent color of the website is a nice light brown.
+- The website has a navigation header that may span the full width. It also contains a search bar and is sticky/fixed.
+	- This should also be built as a component.
+- Everything must work properly on desktop as well as mobile.
+- (Carefully check if I missed anything; you should be able to derive the database structure from the pages)
+- Invent the remaining details yourself.
+
+# Pages
+
+## Non-Logged-In Users
+
+- **Home**
+	- Slideshow with promotional items
+	- Categories >
+		- Main category and subcategory
+	- Featured products
+	- Footer with store information and grouped navigation links
+
+- **Login & Register**
+	- Login
+		- Email
+		- Password
+		- Remember me
+		- Login button
+	- Register
+		- Name
+		- Email
+		- Address information
+		- (Additional relevant fields)
+		- Password
+		- Confirm password
+		- Remember me
+		- Create account button
+	- Password reset
+		- Email
+
+- **Products**
+	- All products (max 25 per page)
+		- Search by name (fuzzy?)
+		- Filter by:
+			- Minimum and maximum price
+			- Category
+				- Collapsible sidebar view with main categories
+					- Collapsible view with subcategories under the main category that can also be clicked individually
+			- Brand
+			- (Other applicable fields)
+	- Single product view
+		- Name
+		- Category
+			- Subcategory
+				- Sub-subcategory
+					- etc.
+		- Brand
+		- Description (use [EasyMDE](https://github.com/ionaru/easy-markdown-editor))
+		- Price
+		- Discount (percentage or amount)
+		- Photos
+		- Stock
+		- Quantity
+		- Add to cart > session cart
+
+- **Categories**
+	- Categories
+		- Category
+		- Subcategories
+			- Users can still click the main category or a subcategory
+			- > Products page filtered by category or subcategory
+
+- **Shopping Cart (icon with quantity in cart) (stored in session)**
+	- Product overview
+		- Per product show photo, name, and price, including discounted price if applicable
+		- Also show whether the product is sold out or no longer active/available
+		- Correctly handle situations where, for example, a user ordered 3 items but only 2 are available; this should be communicated subtly
+		- Orders containing sold-out or inactive products should also be communicated subtly
+	- Total price
+	- Remove items from cart or increase quantity
+	- Proceed to checkout > create account or login
+		- Session cart is transferred into the database
+
+---
+
+## Logged-In Users
+
+Everything from non-logged-in users, plus:
+
+- **Login & Register**
+	- Logout
+
+- **Products**
+	- Single product view
+		- Add to cart > database cart
+
+- **Categories**
+	- Categories / subcategories
+		- Subcategories
+			- > Products page filtered by category
+
+- **Shopping Cart (icon with quantity in cart) (stored in database)**
+	- Proceed to checkout
+		- > Confirm / review order page
+
+- **Profile**
+	- User overview
+	- User must be able to update their own information such as name, email, address, etc.
+	- Confirmation after saving. The address is not overwritten; instead, the new address ID is linked because previous orders may use a different address.
+	- Users can have multiple addresses entered, so all addresses should be displayed here.
+
+- **Orders**
+	- Overview of placed orders with total price
+	- View individual order
+		- All order information including total amount, shipping address, and order barcode. This page must be printable and contain a print button somewhere.
+		- Also show all products individually with price, name, photo, etc. (where applicable). Each item is essentially a link to the product page.
+
+- **Thank You Page**
+	- A page confirming the order and thanking the user for their purchase, including a printable order code and order overview. Essentially the same page as the one shown in Orders > Single Order.
+	- As soon as the order is placed and this page is reached, stock must immediately be updated.
+
+- **Confirm / Review Order Page**
+	- Users can verify whether their order is correct before placing it. Show an overview of products including name, brand, price, discount, etc. (where applicable)
+	- Products that are no longer active or out of stock still remain in the cart but are filtered out here. They are also not stored in the final order.
+	- Correctly handle situations where, for example, a user ordered 3 items but only 2 are available; this should be communicated subtly
+	- Users must be able to change their address here
+		- This does not overwrite the address in their account but instead creates a new address in the database linked to the user and uses it for the order
+	- Place order >
+		- Thank you page with printable order code and order overview
+
+---
+
+## Admins
+
+Everything from logged-in users, plus:
+
+An admin panel where the following can be managed:
+
+- **Login & Register**
+	- Logout
+	- Navigate to admin panel
+
+- **Users**
+	- Overview of all users
+		- Sortable by different user fields, creation date, update date, and alphabetically
+		- Filterable by different user fields
+		- Search bar (fuzzy?)
+	- View individual user details
+	- Edit individual user information
+		- *Address is not overwritten; instead, the new address ID is linked to the user because orders may have been shipped to another address*
+		- Option to send password reset link via email
+	- Create individual user
+	- Delete individual user
+	- User overview must be exportable as CSV. Users go to a separate page where they can filter by various fields and then click export.
+
+- **Administrators**
+	- Overview of all administrators
+		- Sortable by different admin fields, creation date, update date, and alphabetically
+		- Filterable by different admin fields
+		- Search bar (fuzzy?)
+	- Ability to create, edit, view, and delete administrators (superadmin cannot be deleted or edited)
+	- Administrator overview must be exportable as CSV. Users go to a separate page where they can filter by various fields and then click export.
+
+- **Products**
+	- Overview of all products
+		- Sortable by different product fields, creation date, update date, and alphabetically
+		- Filterable just like on the webshop frontend
+		- Search bar (fuzzy?)
+	- Ability to create, delete, view, and edit products. These contain all frontend product fields such as:
+		- Name
+		- Category
+		- Brand
+		- Description with titles, subsections, and lists using [EasyMDE](https://github.com/ionaru/easy-markdown-editor)
+		- Price
+		- Discount (percentage or amount)
+		- Photos
+		- Stock
+		- Quantity
+		- *Additional fields:*
+			- Boolean promotional product (determines whether the product appears in the homepage promotion slideshow)
+			- Boolean active (inactive products are not shown on the webshop)
+			- Boolean featured (determines whether the product appears in the featured section on the homepage)
+	- Product overview must be exportable as CSV. Users go to a separate page where they can filter by various fields and then click export.
+
+- **Categories**
+	- Overview of all categories, subcategories, sub-subcategories, etc.
+		- Sortable by different category/subcategory fields, creation date, update date, and alphabetically
+		- Filterable by category fields
+		- Search bar (fuzzy?)
+	- Ability to create, view, edit, and delete categories
+	- Ability to create, edit, and delete subcategories
+	- Must also show how many products exist in each category
+	- Category overview must be exportable as CSV. Users go to a separate page where they can filter by various fields and then click export.
+
+- **Orders**
+	- Overview of all placed orders and the user who placed them
+		- Sortable by different order and user fields, creation date, update date, and alphabetically
+		- Filterable by different order and user fields
+		- Search bar (fuzzy?)
+	- Ability to create, view, edit, and delete individual orders
+		- Individual orders also contain extra fields shown here:
+			- Status: unprocessed, processing, ready, completed. Newly placed orders are unprocessed by default.
+	- Order overview must be exportable as CSV. Users go to a separate page where they can filter by various fields and then click export.
+
+- **Profile**
+	- Administrators should also be able to update their own information, just like regular users (except superadmin).
+
+- **Settings**
+	- Store information (shown in the footer)
+		- Various details such as:
+			- Webshop name
+			- Email
+			- Phone
+			- Address
+			- Description
+	- Headers and links
+		- *Used for displaying footer navigation links*
+
+---
+
+Laravel file structure context:
+
+- **resources/views**
+	- layout
+		- _Contains layout files such as the main application layout where the `<!DOCTYPE html>` resides. For example, one layout for the application and another layout for error pages._
+	- pages
+		- _Contains the actual views. The folder structure follows the URL structure._
+	- components
+		- _Contains all components, neatly separated into folders, but not too deeply nested, for example:_
+			- _layout/header.blade.php_
+			- _checkbox/index.blade.php_
+			- _checkbox/round.blade.php_
+
+- **app/Http/Controllers** (controllers follow the same structure as the URLs / views/pages)
+- _Controllers are primarily responsible for communication and providing data between a page/component and the backend._
+	- Page
+		- _This folder contains controllers that follow the URL structure / views/pages structure and are divided into 2 types_
+		- User
+			- UserController (_resource functions only, absolutely no data processing, only communication and data provisioning_)
+			- UserActionController (_everything that is not a resource function but still belongs specifically to this page_)
+		- Order
+			- OrderController
+			- OrderActionController
+	- Shared
+		- _This folder contains only generic actions not tied to a specific page and may contain multiple functions or be invokable_
+		- ExportController
+		- PaymentController
+
+- **app/Http/Services** (classes)
+	- _This folder is used for logic when a controller function becomes too large or when logic can be reused in multiple places. Services use application context such as database connections or other services._
+	- PaymentService
+	- OrderService
+
+- **app/Http/Utilities** (classes)
+	- _Similar to Services, except Utilities are reusable pieces of logic that require no application context. So no database connections, models, or other services._
+	- ExportUtility
+	- FormatUtility
+
+- **app/Helpers**
+	- Helpers.php
+		- _This file contains generic helper functions that are too simple to justify a Service or Utility. These functions are reused throughout the application. Once many functions belong to the same category, they should be moved into a Service or Utility._
+
+- **app/Structures**
+	- _If a new data structure is needed, such as a custom collection, it should be placed here._
+
+- **app/Traits**
+	- _Defines functionality that can be shared between multiple classes or implemented by multiple models._
+
+- **app/Providers**
+- _Providers are registered when they should be used as dependency injections. Carefully consider whether a provider should be lazy-loaded or not. These are divided into 3 folders:_
+- Extenders
+	- _Providers that extend existing Laravel functionality_
+	- StringExtensionProvider
+	- BladeExtensionProvider
+- Services
+	- _Providers that bind services_
+	- OrderServiceProvider
+- Utilities
+	- _Providers that bind utilities_
 	- ExportUtilityProvider
